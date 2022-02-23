@@ -82,6 +82,19 @@ const authControl = {
         {
             return res.status(401).json("Invalid Email or Password")
         }
+    },
+
+    //Logout Function
+    logout: async(req, res) => {
+        try 
+        {
+            res.clearCookie("token")
+            return res.send("token")
+        } 
+        catch (error) 
+        {
+            return res.status(500).json({ msg: error.message })
+        }
     }
 }
 

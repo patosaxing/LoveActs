@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
     res.send('App is running at ROOT');
 })
 
-//User Routes
+//User Routes or endpoints
 app.use("/users", userRoutes)
 
 app.listen(port, () => 
