@@ -8,20 +8,48 @@ const jwt = require("jsonwebtoken");
 //Declares and imports Schema from mongoose to connect to mongodb
 const UserSchema = mongoose.Schema(
     {
-        userName: { type: String, required: true, unique: true },
+        userName: 
+        {
+            type: String, required: true, unique: true,
+            minLength: 3, maxLength: 20 
+        },
 
-        email: { type: String, lowercase: true, unique: true, 
-                index: true, required:[true, "can't be blank"],
-                match: [/\S+@\S+\.\S+/, "is invalid"]
-               },
+        email: 
+        { 
+            type: String, lowercase: true, unique: true, 
+            index: true, required:[true, "can't be blank"],
+            match: [/\S+@\S+\.\S+/, "is invalid"],
+            maxLength:50
+        },
 
-        password: { type: String, required: true, minLength: 6 },
+        password: 
+        {
+             type: String, required: true, minLength: 6 
+        },
 
-        firstName: { type: String, required: true, trim: true, 
-                     maxLength: 25 },
+        firstName:
+        {
+            type: String, required: true, trim: true, 
+            maxLength: 25 
+        },
 
-        lastName: { type: String, required: true, trim: true,
-                    maxLength: 25 },
+        lastName: 
+        { 
+            type: String, required: true, trim: true,
+            maxLength: 25 
+        },
+
+        followers:
+        {
+            type: Array,
+            default: []
+        },
+
+        followings:
+        {
+            type: Array,
+            default: []
+        },
 
         // userLocation: { type: String, required: false },
 
