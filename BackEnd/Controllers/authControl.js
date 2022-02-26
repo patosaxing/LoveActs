@@ -90,6 +90,90 @@ const authControl = {
         }
     },
 
+    //Get User Profile
+    getUserProfile: async(req, res) => {
+        const user = await User.findById(req.user._id)
+
+        if(user)
+        {
+            res.json({
+                userName: user.userName,
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                isAdmin: user.isAdmin
+            })
+        }
+        else
+        {
+            return res.status(401).json("User not found")
+        }
+    },
+
+    //Update or and Edit User Profile
+    updateUserProfile: async(req, res) => {
+        const id = req.user._id
+        const user = await User.findById(req.user._id)
+
+        if(user) {
+            user.userName = req.body.userName || user.userName
+            user.email = req.body.email || user.email
+
+            if(req.body.password){
+                user.password = req.body.password
+            }
+
+            const updatedUser = await user.save()
+
+            res.json({
+                userName: updatedUser.userName,
+                email: updatedUser.email
+            })
+        }
+        else{
+            return res.status(401).json("User not found")
+        }
+    },
+
+    //Get all Users
+    getUsers: async (req, res) => {
+        const user = await User.find({})
+        res.json(user)
+    },
+
+    //Delete User Function
+    deleteUser: async (req, res) => {
+        const user = await User.findById(req.params.id)
+
+        if(user){
+            await user.remove()
+            res.json({ message: "User Removed" })
+        }
+        else{
+            return res.status(400).json("User not found")
+        }
+    },
+
+    //Update User Function
+    updateUser: async (req, res) => {
+        const user = await User.findById(req.params.id)
+
+        if(user){
+            user.name = req.body.name || user.name
+            user.email = req.body.email || user.email
+
+            const updatedUser = await user.save()
+
+            res.json({
+                name: updatedUser.name,
+                email: updatedUser.email
+            })
+        }
+        else{
+            return res.status(404).json ("User not found")
+        }
+    },
+
     //Logout Function
     logout: async(req, res) => {
         try 
