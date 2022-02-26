@@ -1,0 +1,19 @@
+{
+  "name": "socket",
+  "version": "1.0.0",
+  "description": "For Messages",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/patosaxing/LoveActs.git"
+  },
+  "author": "Chukkie Patrick Osaje",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/patosaxing/LoveActs/issues"
+  },
+  "homepage": "https://github.com/patosaxing/LoveActs#readme"
+}
