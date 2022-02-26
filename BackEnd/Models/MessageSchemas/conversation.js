@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 
 //Setup Conversation Schema
-const ConversationSchema = new mongoose.Schema(
+const ConversationSchema = mongoose.Schema(
     {
         members:{
             type: Array,
@@ -11,4 +11,5 @@ const ConversationSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-module.exports = mongoose.model("Conversation", ConversationSchema);
+const Conversation = mongoose.model("Conversation", ConversationSchema);
+module.exports = Conversation;

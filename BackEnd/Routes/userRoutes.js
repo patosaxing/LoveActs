@@ -12,4 +12,6 @@ router.post("/login", authControl.login)
 
 router.post("/newConversation", authControl.getConversation)
 
+router.post("/newMessage", authControl.newMessage)
+
 module.exports = router
