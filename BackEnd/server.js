@@ -13,22 +13,22 @@ const helmet = require("helmet");
 */
 const server = require("http").Server(app);
 const { v4: uuidv4 } = require("uuid");
-const io = require("socket.io")(server);
+
 
 /* Not sure about this block of code, might be what i need for video
    streaming, chat and recording or maybe not...
 */
-io.on("connection", socket => {
-    console.log("Someone Connected")
-    socket.on("join-room", ({ roomId, userName }) =>
-    {
-        console.log("User joined room")
-        console.log(roomId);
-        console.log(userName);
-        socket.join(roomId);
-        socket.to(roomId).emit("user is connected". userName);
-    })
-})
+// io.on("connection", socket => {
+//     console.log("Someone Connected")
+//     socket.on("join-room", ({ roomId, userName }) =>
+//     {
+//         console.log("User joined room")
+//         console.log(roomId);
+//         console.log(userName);
+//         socket.join(roomId);
+//         socket.to(roomId).emit("user is connected". userName);
+//     })
+// })
 
 //Middleware
 app.use(cors());

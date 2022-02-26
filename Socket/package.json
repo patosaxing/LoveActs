@@ -4,7 +4,7 @@
   "description": "For Messages",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/patosaxing/LoveActs/issues"
   },
-  "homepage": "https://github.com/patosaxing/LoveActs#readme"
+  "homepage": "https://github.com/patosaxing/LoveActs#readme",
+  "dependencies": {
+    "nodemon": "^2.0.15",
+    "socket.io": "^4.4.1"
+  }
 }
