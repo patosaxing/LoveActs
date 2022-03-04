@@ -10,12 +10,12 @@ router.post("/register", authControl.register)
 
 router.post("/login", authControl.login)
 
-router.post("/newConversation", authControl.getConversation)
+router.post("/newConversation", protect, authControl.getConversation)
 
-router.post("/newMessage", authControl.newMessage)
+router.post("/newMessage", protect, authControl.newMessage)
 
-router.get("/getMessage", authControl.getMessages)
+router.get("/getMessage", protect, authControl.getMessages)
 
-router.get("/allusers", authControl.allUsers)
+router.get("/allusers", protect, authControl.allUsers)
 
 module.exports = router
