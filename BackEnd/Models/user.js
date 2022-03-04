@@ -39,6 +39,13 @@ const UserSchema = mongoose.Schema(
             maxLength: 25 
         },
 
+        pic:
+        {
+            type: "String",
+            required: true,
+            default: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
+        },
+
         followers:
         {
             type: Array,

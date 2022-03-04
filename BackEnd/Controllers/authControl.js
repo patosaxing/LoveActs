@@ -23,7 +23,13 @@ const authControl = {
     register: asyncHandler(async (req, res, next) =>
     {
         //Takes what is entered into each area 
-        const { userName, email, password, firstName, lastName } = req.body
+        const { userName, email, password, firstName, lastName, pic } = req.body
+
+        //Makes sure fields are entered into textfields
+        if(!userName || !email || !password || !firstName || !lastName){
+            res.status(400)
+            throw new Error("Please Enter all the Fields")
+        }
 
         //Check if Username exists
         const userExits = await User.findOne({ userName })
@@ -42,7 +48,7 @@ const authControl = {
         //Create New User
         const user = await User.create(
         {
-            userName, email, password, firstName, lastName
+            userName, email, password, firstName, lastName, pic
         })
 
         if(user)
@@ -59,7 +65,7 @@ const authControl = {
         }
         else
         {
-            return res.status(400).json("Invalid user data. All fields are required")
+            return res.status(400).json("Failed to Create a User")
         }
     }),
 
@@ -80,6 +86,7 @@ const authControl = {
             res.json({
                 userName: user.userName,
                 email: user.email,
+                pic: user.pic,
                 //isAdmin: user.isAdmin
                 token: generateToken(user._id)
             })
@@ -187,6 +194,111 @@ const authControl = {
         }
     },
 
+    //Forgot Password Function
+    forgotPassword: async (req, res) => {
+        /*Send Email to whatever email address is
+         entered but check if the email exists 
+        */
+       const { email } = req.body;
+       try{
+           const user = await User.findOne({ email });
+           
+           if(!user) {
+               return res.status(404).json("This email cant be sent")
+           }
+
+           /* This resets the Token Gen and then add it
+           to the database the hashed(private) version of
+           Token
+            */
+           const resetToken = user.getResetPasswordToken();
+
+           await user.save();
+
+           //Creates the reset url of email provided
+           const resetUrl = `http://localhost:4000/users/passwordreset/${resetToken}`
+
+           //HTML Message to send to email
+           const message = `
+           <h1>You have requested a password reset</h1>
+           <p>Please go to this link to reset your password:</p>
+           <a href = ${resetUrl} clicktracking = off>${resetUrl}</a>`;
+
+           try{
+               await sendEmail({
+                   to: user.email,
+                   subject: "LoveActs Password Reset",
+                   text: message
+               })
+
+               res.status(200).json({ success: true, data: `Email Sent to ${email}` })
+           } 
+           catch(err){
+               console.log(err);
+
+               user.resetPasswordToken = undefined;
+               user.resetPasswordExpire = undefined;
+
+               await user.save();
+               return res.status(500).json('Email could not be sent')
+           }
+       }
+       catch(err){
+           next(err);
+       }
+    },
+
+    //Reset Password Function
+    resetPassword: async(req, res) => {
+        //Compare token in URL params to hashed token
+        const resetPasswordToken = crypto
+            .createHash('sha256')
+            .update(req.params.resetToken)
+            .digest('hex');
+
+        try{
+            const user = await User.findOne({
+                resetPasswordToken,
+                resetPasswordExpire: { $gt: Date.now() }
+            })
+
+            if(!user){
+                return res.status(400).json('Invalid Token')
+            }
+
+            user.password = req.body.password;
+            user.resetPasswordToken = undefined;
+            user.resetPasswordExpire = undefined;
+
+            await user.save();
+
+            res.status(201).json({
+                success: true,
+                data: 'Password Reset Success',
+                token: user.getSignedJwtToken(),
+            })
+        }
+        catch(err){
+            next(err)
+        }    
+    },
+
+    //Search for Users (/api/user?search=pato)
+    allUsers: asyncHandler(async (req, res) => {
+        const keyword = req.query.search
+        ? {
+            $or: [
+                { userName: { $regex: req.query.search, $options: "i" } },
+                { email: { $regex: req.query.search, $options: "i" } },
+            ],
+        }
+        : {}
+
+        const users = await User.find(keyword).find({ _id: { $ne: req.user._id } })
+        res.send(users)
+
+        // console.log(keyword)
+    }),
 
 
     //All things related and functions with Messages

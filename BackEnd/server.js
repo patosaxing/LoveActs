@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 const userRoutes = require("./Routes/userRoutes");
 const path = require("path");
 const helmet = require("helmet");
+const { notFound, errorHandler } = require("./Middleware/errorMiddleware")
 
 /* Not sure about this import, might be what i need for video
    streaming, chat and recording or maybe not...
@@ -36,6 +37,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(helmet());
+
+//Error Handling Middlewares
+app.use(notFound);
+app.use(errorHandler);
 
 //Database Import Statement
 const connectDB = require("./Models/db");
