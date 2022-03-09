@@ -46,15 +46,24 @@ const UserSchema = mongoose.Schema(
             default: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
         },
 
+        posts:[
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User"
+            }
+        ],
+
         followers:
         {
-            type: Array,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
             default: []
         },
 
-        followings:
+        following:
         {
-            type: Array,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
             default: []
         },
 

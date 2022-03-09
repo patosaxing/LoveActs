@@ -18,4 +18,6 @@ router.get("/getMessage", protect, authControl.getMessages)
 
 router.get("/allusers", protect, authControl.allUsers)
 
+router.get("/followUser", protect, authControl.followUser)
+
 module.exports = router

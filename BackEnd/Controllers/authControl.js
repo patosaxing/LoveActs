@@ -60,6 +60,7 @@ const authControl = {
                     email: user.email,
                     firstName: user.firstName,
                     lastName: user.lastName,
+                    pic: user.pic,
                     token: generateToken(user._id)
                 })
         }
@@ -412,6 +413,39 @@ const authControl = {
         catch(err)
         {
             res.status(500).json(err);
+        }
+    },
+
+    
+    //Follower Function
+    followUser: async(req, res) => {
+        try {
+            const userToFollow = await User.findById(req.params.id)
+            const loggedInUser = await User.findById(req.user._id)
+
+            if(!userToFollow){
+                return res.status(404).json({
+                    success: false,
+                    message: "User not found"
+                })
+            }
+
+            loggedInUser.following.push(userToFollow._id)
+            userToFollow.followers.push(loggedInUser._id)
+
+            await loggedInUser.save()
+            await userToFollow.save()
+
+            res.status(200).json({
+                success: true,
+                message: "User followed"
+            })
+        }
+        catch(error){
+            res.status(500).json({
+                success: false,
+                message: error.message
+            })
         }
     }
 }

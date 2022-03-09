@@ -4,25 +4,49 @@ const mongoose = require("mongoose");
 //Setup Post Schema
 const PostSchema = new mongoose.Schema(
     {
-        userId:
+        owner:
         {
-            type: String,
-            required: true
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            // required: true
         },
         desc:
         {
             type: String,
             max: 500
         },
+
+        createdAt: {
+            type: Date,
+            default: Date.now
+        },
+
         img:
         {
-            type: String
+            public_id: String,
+            url: String
         },
-        likes:
-        {
-            type: Array,
-            default:[]
-        }
+        likes:[
+            {
+                user: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "User",
+                },
+            }],
+
+        comments: [
+            {
+                user: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "User",
+                },
+                comment: {
+                    type: String,
+                    required: true
+                }
+            }
+        ]    
+        
     },
     {
         timestamps: true
