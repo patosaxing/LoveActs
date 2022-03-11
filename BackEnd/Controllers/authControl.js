@@ -381,19 +381,54 @@ const authControl = {
         }
     },
 
-    //Create a Post
-    newPost: async(req, res) => {
-        const newPost = new Post(req.body);
-        try 
-        {
-            const savedPost = await newPost.save();
-            res.status(200).json(savedPost);
+    //All things related to Posts
+
+    //Another create post function
+    createPost: async(req, res) => {
+        try{
+            const newPostData = {
+                caption: req.body.caption,
+                img:{
+                    public_id: "req.body.public_id",
+                    url: "req.body.url"
+                },
+                owner: req.user._id
+            }
+
+            const newPost = await Post.create(newPostData)
+
+            const user = await User.findById(req.user._id)
+
+            user.posts.push(newPost._id)
+
+            await user.save()
+
+            res.status(201).json({
+                success: true,
+                post: newPost
+            })
         } 
-        catch(err) 
-        {
-            res.status(500).json(err);
+        catch(error){
+            res.status(500).json({
+                success:false,
+                message:error.message
+            })
         }
     },
+
+    //Create a Post
+    // newPost: async(req, res) => {
+    //     const newPost = new Post(req.body);
+    //     try 
+    //     {
+    //         const savedPost = await newPost.save();
+    //         res.status(200).json(savedPost);
+    //     } 
+    //     catch(err) 
+    //     {
+    //         res.status(500).json(err);
+    //     }
+    // },
 
     //Update a Post
     updatePost: async(req, res) => {

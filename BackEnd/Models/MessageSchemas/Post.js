@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 //Setup Post Schema
 const PostSchema = new mongoose.Schema(
     {
+        caption: String,
+
         owner:
         {
             type: mongoose.Schema.Types.ObjectId,

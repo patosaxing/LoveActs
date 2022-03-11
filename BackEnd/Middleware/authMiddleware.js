@@ -7,6 +7,11 @@ const User = require("../Models/user")
 const protect = async(req, res, next) => {
     let token
 
+    // const { token } = req.cookies
+
+    // console.log(token)
+    // console.log(req.cookies.token)
+
     if(
         req.headers.authorization &&
         req.headers.authorization.startsWith("Bearer")
