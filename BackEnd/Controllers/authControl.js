@@ -9,6 +9,7 @@ const sendEmail = require("../utils/sendEmail");
 const Message = require("../Models/MessageSchemas/message");
 const Post = require("../Models/MessageSchemas/Post");
 const Conversation = require("../Models/MessageSchemas/conversation");
+// const { post } = require("../Routes/userRoutes");
 
 
 /*
@@ -744,7 +745,7 @@ const authControl = {
             }
 
             user.password = newPassword
-            await user.save()
+            await User.save()
 
             res.status(200).json({
                 success: true,
@@ -772,15 +773,15 @@ const authControl = {
                 })
             }
 
-            if(post.owner.toString() !== req.user._id.toString()){
+            if(Post.owner.toString() !== req.user._id.toString()){
                 return res.status(401).json({
                     success: false,
                     message: "Unauthorized"
                 })
             }
 
-            post.caption = req.body.caption
-            await post.save()
+            Post.caption = req.body.caption
+            await Post.save()
 
             res.status(200).json({
                 success: true,
@@ -788,6 +789,61 @@ const authControl = {
             })
 
         } 
+        catch(error){
+            res.status(500).json({
+                success: false,
+                message: error.message
+            })
+        }
+    },
+
+    //Add Comment Function
+    addComment: async(req, res) => {
+        try{
+            const post = await Post.findById(req.params.id)
+
+            if(!post){
+                return res.status(404).json({
+                    success: false,
+                    message: "Post not found"
+                })
+            }
+
+            let commentIndex = -1;
+
+            //Checking to see if Comment already exists
+            arr = [1,2,3,4,5]
+
+            Post.comments.forEach((item, index) => {
+                if(item.user.toString() === req.user._id.toString()){
+                    commentIndex = index;
+                }
+            })
+
+            if(commentIndex !== -1){
+                Post.comments[commentIndex].comment = req.body.comment
+
+                await Post.save();
+
+                return res.status(200).json({
+                    success: true,
+                    message: "Comment Updated"
+                })
+            }
+            else{
+                Post.comments.push({
+                   user: req.user._id,
+                   comment: req.body.comment
+                })
+
+                await Post.save()
+                return res.status(200).json({
+                    success: true,
+                    message: "Comment Added"
+                })
+            }
+
+        }
         catch(error){
             res.status(500).json({
                 success: false,
