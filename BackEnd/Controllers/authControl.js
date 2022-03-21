@@ -118,6 +118,49 @@ const authControl = {
         }
     },
 
+    //Another Get User Profile Function
+    userProfile: async(req, res) => {
+        try{
+          const user = await User.findById(req.params.id).populate("posts")
+          
+          if(!user){
+              return res.status(404).json({
+                  success: false,
+                  message: "User not found"
+              })
+          }
+
+          res.status(200).json({
+              success: true,
+              user,
+          })
+        }
+        catch(error){
+            res.status(500).json({
+                success: false,
+                message: error.message
+            })
+        }
+    },
+
+    //Get My Profile with Posts
+    myProfile: async(req, res) => {
+        try{
+          const user = await User.findById(req.user._id).populate("posts")
+          
+          res.status(200).json({
+              success: true,
+              user,
+          })
+        }
+        catch(error){
+          res.status(500).json({
+              success: false,
+              message: error.message
+          })  
+        }
+    },
+
     //Update or and Edit User Profile
     updateUserProfile: async(req, res) => {
         const id = req.user._id
@@ -143,10 +186,83 @@ const authControl = {
         }
     },
 
+    //Delete User Profile
+    deleteMyProfile: async(req, res) => {
+        try{
+           const user = await User.findById(req.user._id) 
+           const posts = user.posts
+           const followers = user.followers
+           const following = user.following
+           const userId = user._id
+           await user.remove()
+
+           await user.remove()
+
+           //Logout user after deleting profile
+           res.cookie("taken", null, {
+               expires: new Date(Date.now),
+               httpOnly: true
+           })
+           
+           //Deletes all Posts of the User
+           for (let i = 0; i < posts.length; i++) {
+            const post = await Post.findById(posts[i])
+            await post.remove() 
+               
+           }
+
+           //Removing User from Followers Following 
+           for(let i = 0; i < followers.length; i++) {
+               const follower = await User.findById(followers[i]);
+               
+               const index = follower.following.indexOf(userId)
+               follower.following.splice(index, 1)
+               await follower.save()
+           }
+
+           for(let i = 0; i < following.length; i++) {
+            const follows = await User.findById(following[i]);
+            
+            const index = follows.following.indexOf(userId)
+            follows.following.splice(index, 1)
+            await follows.save()
+        }
+
+           res.status(200).json({
+             success: true,
+             message: "Profile Deleted"  
+           })
+        }
+        catch(error){
+            res.status(500).json({
+                success: false,
+                message: error.message
+            })
+        }
+    },
+
     //Get all Users
     getUsers: async (req, res) => {
         const user = await User.find({})
         res.json(user)
+    },
+
+    //Another Get all Users Function
+    getAllUsers: async (req, res) => {
+        try{
+            const users = await User.find({})
+
+            res.status(200).json({
+                success: true,
+                users
+            })
+        }
+        catch(error){
+            res.status(500).json({
+                success: false,
+                message: error.message
+            })
+        }
     },
 
     //Delete User Function
@@ -182,7 +298,7 @@ const authControl = {
         }
     },
 
-    //Logout Function
+    // Logout Function
     logout: async(req, res) => {
         try 
         {
@@ -192,6 +308,25 @@ const authControl = {
         catch (error) 
         {
             return res.status(500).json({ msg: error.message })
+        }
+    },
+
+    //Another Logout Function
+    logout: async(req, res) => {
+        try{
+            res
+                .status(200)
+                .cookie("token", null, { expires: new Date(Date.now()), httpOnly: true })
+                .json({
+                    success: true,
+                    message: "Logged Out"
+                })
+        }
+        catch(error){
+            res.status(500).json({
+                success: false,
+                message: error.message,
+            })
         }
     },
 
@@ -451,6 +586,83 @@ const authControl = {
         }
     },
 
+    likeAndUnlikePost: async(req, res) => {
+        try{
+           const post = await Post.findById(req.params.id)
+
+           if(!post){
+               return res.status(404).json({
+                   success: false,
+                   message: "Post not Found"
+               })
+           }
+
+           if(post.likes.includes(req.user._id)){
+               const index = post.likes.indexOf(req.user._id)
+               post.likes.splice(index, 1)
+
+               await post.save()
+
+               return res.status(200).json({
+                   success: true, 
+                   message: "Post Unliked"
+               })
+           }
+
+           else{
+               post.likes.push(req.user._id)
+
+               await post.save()
+           }
+
+        }
+        catch(error){
+            res.status(500).json({
+                success: false,
+                message: error.message
+            })
+        }
+    },
+
+    deletePost: async(req, res) => {
+        try{
+          const post = await Post.findById(req.params.id)
+          
+          if(!post){
+              return res.status(404).json({
+                  success: false,
+                  message: "Post not found"
+              })
+          }
+
+          if(post.owner.toString() !== req.user._id.toString()){
+              return res.status(401).json({
+                  success: false,
+                  message:"Unauthorized"
+              })
+          }
+
+          await post.remove()
+
+          const user = await User.findById(req.user._id)
+
+          const index = user.posts.indexOf(req.params.id)
+          user.posts.splice(index, 1)
+          await user.save()
+
+          
+          res.status(200).json({
+              success: true,
+              message: "Post Deleted"
+          })
+        }
+        catch(error){
+          res.status(500).json({
+              success: false,
+              message: error.message,
+          })  
+        }
+    },
     
     //Follower Function
     followUser: async(req, res) => {
@@ -465,17 +677,117 @@ const authControl = {
                 })
             }
 
-            loggedInUser.following.push(userToFollow._id)
-            userToFollow.followers.push(loggedInUser._id)
+            // loggedInUser.following.push(userToFollow._id)
+            // userToFollow.followers.push(loggedInUser._id)
 
-            await loggedInUser.save()
-            await userToFollow.save()
+            if(loggedInUser.following.includes(userToFollow._id)){
+                const indexFollowing = loggedInUser.following.indexOf(userToFollow._id)
+                const indexFollowers = userToFollow.followers.indexOf(loggedInUser._id)
+
+                loggedInUser.following.splice(indexFollowing, 1)
+                userToFollow.followers.splice(indexFollowers, 1)
+
+                await loggedInUser.save()
+                await userToFollow.save()
+
+                res.status(200).json({
+                    success: true,
+                    message: "User Unfollowed"
+                })
+            }
+            else{
+                loggedInUser.following.push(userToFollow._id)
+                userToFollow.followers.push(loggedInUser._id)
+
+                await loggedInUser.save()
+                await userToFollow.save()
+
+                res.status(200).json({
+                    success: true,
+                    message: "User Followed"
+                })
+
+            }
+
+            // await loggedInUser.save()
+            // await userToFollow.save()
+        }
+        catch(error){
+            res.status(500).json({
+                success: false,
+                message: error.message
+            })
+        }
+    },
+
+    //Password Update Function
+    updatePassword: async(req, res) => {
+        try{
+            const user = await User.findById(req.user._id).select("+password")
+
+            const { oldPassword, newPassword } = req.body
+
+            if(!oldPassword || !newPassword){
+                return res.status(400).json({
+                    success: false,
+                    message: "Please provide Old and New Password"
+                })
+            }
+
+            const isMatch = await User.matchPassword(oldPassword)
+
+            if(!isMatch){
+                return res.status(400).json({
+                    success: false,
+                    message: "Incorrect Old Password"
+                })
+            }
+
+            user.password = newPassword
+            await user.save()
 
             res.status(200).json({
                 success: true,
-                message: "User followed"
+                message: "Password Updated"
+            })
+
+        }
+        catch(error){
+            res.status(500).json({
+                success: false, 
+                message: error.message
             })
         }
+    },
+
+    //Update Caption Function
+    updateCaption: async(req, res) => {
+        try{
+            const post = await Post.findById(req.params.id)
+
+            if(!post){
+                return res.status(404).json({
+                    success: false,
+                    message: "Post not found"
+                })
+            }
+
+            if(post.owner.toString() !== req.user._id.toString()){
+                return res.status(401).json({
+                    success: false,
+                    message: "Unauthorized"
+                })
+            }
+
+            post.caption = req.body.caption
+            await post.save()
+
+            res.status(200).json({
+                success: true,
+                message: "Post Updated"
+            })
+
+        } 
         catch(error){
             res.status(500).json({
                 success: false,
