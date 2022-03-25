@@ -5,6 +5,7 @@ const { createPost } = require("../Controllers/authControl");
 const router = express.Router();
 const authControl = require("../Controllers/authControl")
 const { protect, admin } = require("../Middleware/authMiddleware")
+const { isAuthenticated } = require("../Middleware/auth")
 
 //Router Statement for Register and Login
 router.post("/register", authControl.register)
@@ -23,7 +24,7 @@ router.get("/allusers", protect, authControl.allUsers)
 router.get("/followUser", protect, authControl.followUser)
 
 //Router Statement for Posts
-router.post("/createPost", protect, authControl.createPost)
+router.post("/createPost", isAuthenticated, authControl.createPost)
 router.get("/likeAndUnlikePost", protect, authControl.likeAndUnlikePost)
 router.delete("/deletePost", protect, authControl.deletePost)
 router.put("addComment/:id", protect, authControl.addComment)

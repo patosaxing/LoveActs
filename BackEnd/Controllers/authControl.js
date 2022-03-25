@@ -814,16 +814,16 @@ const authControl = {
             //Checking to see if Comment already exists
             arr = [1,2,3,4,5]
 
-            Post.comments.forEach((item, index) => {
+            post.comments.forEach((item, index) => {
                 if(item.user.toString() === req.user._id.toString()){
                     commentIndex = index;
                 }
             })
 
             if(commentIndex !== -1){
-                Post.comments[commentIndex].comment = req.body.comment
+                post.comments[commentIndex].comment = req.body.comment
 
-                await Post.save();
+                await post.save();
 
                 return res.status(200).json({
                     success: true,
@@ -831,18 +831,69 @@ const authControl = {
                 })
             }
             else{
-                Post.comments.push({
+                post.comments.push({
                    user: req.user._id,
                    comment: req.body.comment
                 })
 
-                await Post.save()
+                await post.save()
                 return res.status(200).json({
                     success: true,
                     message: "Comment Added"
                 })
             }
 
+        }
+        catch(error){
+            res.status(500).json({
+                success: false,
+                message: error.message
+            })
+        }
+    },
+
+    //Delete Comment Function
+    deleteComment: async(req, res) => {
+        try{
+            const post = await Post.findById(req.params.id)
+
+            if(!post){
+              return res.status(404).json({
+                  success: false,
+                  message: "Post not found"
+              })  
+            }
+
+            if(post.owner.toString() === req.user._id.toString() ){
+               post.comments.forEach((item, index) => {
+                   if(item._id.toString() === req.body.commentId.toString()){
+                       return post.comments.splice(index, 1)
+                   }
+               })
+               
+               await post.save()
+
+               return res.status(200).json({
+                   success: true,
+                   message: "Selected comment has been deleted"
+               })
+            }
+            else{
+               post.comments.forEach((item, index) => {
+                if(item.user.toString() === req.user._id.toString() ){
+                    post.comments.splice(index, 1)
+                    //commentIndex = index
+                } 
+               }) 
+
+               await post.save()
+
+               res.status(200).json({
+                   success: true,
+                   message: "Your comment has been deleted"
+               })
+            }
+            
         }
         catch(error){
             res.status(500).json({

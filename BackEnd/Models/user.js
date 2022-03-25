@@ -53,19 +53,19 @@ const UserSchema = mongoose.Schema(
             }
         ],
 
-        followers:
+        followers:[
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
-            default: []
-        },
+            // default: []
+        }],
 
-        following:
+        following:[
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
-            default: []
-        },
+            // default: []
+        }],
 
         // userLocation: { type: String, required: false },
 
