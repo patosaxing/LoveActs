@@ -385,6 +385,54 @@ const authControl = {
        }
     },
 
+    //Another Forgot Password Function        
+    forgottenPassword: async(req, res) => {
+        try{
+           const user = await User.findOne({ email: req.body.email })
+           
+           if(!user){
+               return res.status(404).json({
+                   success: false,
+                   message: "User not found"
+               })
+           }
+
+           const resetPasswordToken = user.getResetPasswordToken()
+
+           await user.save()
+
+           const resetUrl = `${req.protocol}://${req.get("host")}http://localhost:4000/users/passwordreset/${resetPasswordToken}`
+
+           const message = `Reset Your Password by clicking on the link below: \n ${resetUrl}`
+
+           try{
+               await sendEmail({
+                   email: user.email,
+                   subject: "Reset Password",
+                   message,
+               })
+
+               res.status(200).json({
+                   success: true,
+                   message: `Email sent to ${user.email}`
+               })
+           }
+           catch(error){
+               user.resetPasswordToken = undefined
+               user.resetPasswordExpire = undefined
+
+               await user.save()
+           }
+           
+        }
+        catch(error){
+           res.status(500).json({
+               success: false,
+               message: error.message
+           }) 
+        }
+    },
+
     //Reset Password Function
     resetPassword: async(req, res) => {
         //Compare token in URL params to hashed token
@@ -798,7 +846,7 @@ const authControl = {
     },
 
     //Add Comment Function
-    addComment: async(req, res) => {
+    addCommentOnPost: async(req, res) => {
         try{
             const post = await Post.findById(req.params.id)
 
@@ -853,7 +901,7 @@ const authControl = {
     },
 
     //Delete Comment Function
-    deleteComment: async(req, res) => {
+    deleteCommentOnPost: async(req, res) => {
         try{
             const post = await Post.findById(req.params.id)
 
@@ -864,12 +912,20 @@ const authControl = {
               })  
             }
 
-            if(post.owner.toString() === req.user._id.toString() ){
-               post.comments.forEach((item, index) => {
+            if(post.owner.toString() === req.user._id.toString()){
+
+                if(req.body.commentId == undefined){
+                    return res.status(400).json({
+                        success: false,
+                        message: "Comment ID is required"
+                    })
+                }
+
+                post.comments.forEach((item, index) => {
                    if(item._id.toString() === req.body.commentId.toString()){
                        return post.comments.splice(index, 1)
                    }
-               })
+                })
                
                await post.save()
 
@@ -881,7 +937,7 @@ const authControl = {
             else{
                post.comments.forEach((item, index) => {
                 if(item.user.toString() === req.user._id.toString() ){
-                    post.comments.splice(index, 1)
+                   return post.comments.splice(index, 1)
                     //commentIndex = index
                 } 
                }) 

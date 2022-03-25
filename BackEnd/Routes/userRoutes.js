@@ -27,7 +27,7 @@ router.get("/followUser", protect, authControl.followUser)
 router.post("/createPost", isAuthenticated, authControl.createPost)
 router.get("/likeAndUnlikePost", protect, authControl.likeAndUnlikePost)
 router.delete("/deletePost", protect, authControl.deletePost)
-router.put("addComment/:id", protect, authControl.addComment)
+router.put("addCommentOnPost/:id", protect, authControl.addCommentOnPost)
 
 //Router Statement for Followers
 router.get("followUser/:id", protect, authControl.followUser)
