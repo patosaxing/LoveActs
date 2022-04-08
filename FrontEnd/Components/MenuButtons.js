@@ -3,49 +3,7 @@ import { View, Text, StyleSheet,
     TouchableOpacity, Dimensions, 
     FlatList } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-
-//Array of icons
-// const iconItems = [
-//     {
-//         id: 1,
-//         name: 'video-vintage',
-//         title: 'New Service',
-//         customColor: '#7393B3'
-//     },
-
-//     {
-//         id: 2,
-//         name: 'plus-box',
-//         title: 'Join'
-//     },
-
-//     {
-//         id: 3,
-//         name: 'calendar-month',
-//         title: 'Set Service'
-//     },
-
-//     {
-//         id: 4,
-//         name: 'upload-network',
-//         title: 'Share Screen'
-//     },
-
-//     {
-//         id: 5,
-//         name:'book-open-page-variant',
-//         title: 'Bible Bookmarks'
-//     },
-
-//     {
-//         id: 6,
-//         name: 'account-group',
-//         title: 'Discipleship'
-//     }
-//  ]
-
- //const numColumns = 4;
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function MenuButtons(){
   return(
