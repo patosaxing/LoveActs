@@ -6,9 +6,9 @@ import Entypo from 'react-native-vector-icons/Entypo';
 function Header(){
   return(
     <View style = {styles.container}>
-        <Entypo name = 'menu' size = {30} color = '#1F51FF' />
-        <Entypo name = 'user' size = {27} color = '#1F51FF' />
-        <Entypo name = 'new-message' size = {27} color = '#1F51FF' />
+        <Entypo name = 'menu' size = {30} color = '#552582' />
+        <Entypo name = 'user' size = {27} color = '#552582' />
+        <Entypo name = 'new-message' size = {27} color = '#552582' />
         {/* <Text>
             Header
         </Text> */}

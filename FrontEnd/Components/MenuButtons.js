@@ -61,10 +61,10 @@ function MenuButtons(){
 
         <View>
             <TouchableOpacity style = {styles.buttonContainer}>
-                    <MaterialCommunityIcon name = {'calendar-month'} size = {40}
+                    <MaterialCommunityIcon name = {'church'} size = {40}
                         color = {'#EFEFEF'} />
             </TouchableOpacity>
-                    <Text style= {styles.menuText} >Set Service</Text>
+                    <Text style= {styles.menuText} >Sermons</Text>
         </View>
 
         <View>
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     },
 
     buttonContainer: {
-        backgroundColor: '#1F51FF',
+        backgroundColor: '#552582',
         width: 50,
         height: 50,
         alignItems: 'center',
