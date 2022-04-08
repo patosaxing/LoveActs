@@ -1,49 +1,122 @@
 import React from 'react';
 import { View, Text, StyleSheet,
-    TouchableOpacity } from 'react-native';
+    TouchableOpacity, Dimensions, 
+    FlatList } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
+//Array of icons
+// const iconItems = [
+//     {
+//         id: 1,
+//         name: 'video-vintage',
+//         title: 'New Service',
+//         customColor: '#7393B3'
+//     },
 
-const items = [
-    {
-        id: 1,
-        name: 'video-camera',
-        title: 'New Service'
-    },
+//     {
+//         id: 2,
+//         name: 'plus-box',
+//         title: 'Join'
+//     },
 
-    {
-        id: 2,
-        name: 'plus-square',
-        title: 'Join'
-    },
+//     {
+//         id: 3,
+//         name: 'calendar-month',
+//         title: 'Set Service'
+//     },
 
-    {
-        id: 3,
-        name: 'calender',
-        title: 'Book Service'
-    },
+//     {
+//         id: 4,
+//         name: 'upload-network',
+//         title: 'Share Screen'
+//     },
 
-    {
-        id: 4,
-        name: 'upload',
-        title: 'Share Screen'
-    }
-]
+//     {
+//         id: 5,
+//         name:'book-open-page-variant',
+//         title: 'Bible Bookmarks'
+//     },
+
+//     {
+//         id: 6,
+//         name: 'account-group',
+//         title: 'Discipleship'
+//     }
+//  ]
+
+ //const numColumns = 4;
 
 function MenuButtons(){
   return(
-     <View style = {styles.container}>
-         {/* One Button */}
-         {items.map((item, index) =>
-            <View style = {styles.buttonContainer}>
-                <TouchableOpacity
-                    style = {styles.button}>
-                    <FontAwesome name = {item.name} size = {35}
-                    color = {'#EFEFEF'} />
+    <View>
+        <View style = {styles.container}>
+            <View>
+                <TouchableOpacity style = {styles.buttonContainer} >
+                    <MaterialCommunityIcon name = {'video-vintage'} size = {40}
+                        color = {'#EFEFEF'} />
                 </TouchableOpacity>
-                <Text style = {styles.menuText}>{item.title}</Text>
-            </View>
-         )}
+                    <Text style= {styles.menuText} >New Service</Text>
+        </View>
+
+        <View>
+            <TouchableOpacity style = {styles.buttonContainer}>
+                    <MaterialCommunityIcon name = {'plus-box'} size = {40}
+                        color = {'#EFEFEF'} />
+            </TouchableOpacity>
+                    <Text style= {styles.menuText} >Join</Text>
+        </View>
+
+        <View>
+            <TouchableOpacity style = {styles.buttonContainer}>
+                    <MaterialCommunityIcon name = {'calendar-month'} size = {40}
+                        color = {'#EFEFEF'} />
+            </TouchableOpacity>
+                    <Text style= {styles.menuText} >Set Service</Text>
+        </View>
+
+        <View>
+            <TouchableOpacity style = {styles.buttonContainer}>
+                    <MaterialCommunityIcon name = {'upload-network'} size = {40}
+                        color = {'#EFEFEF'} />
+            </TouchableOpacity>
+                    <Text style= {styles.menuText} >Share Screen</Text>
+        </View>
+    </View>
+
+    <View style = {styles.container}>
+        <View>
+                <TouchableOpacity style = {styles.buttonContainer} >
+                    <MaterialCommunityIcon name = {'book-open-page-variant'} size = {40}
+                        color = {'#EFEFEF'} />
+                </TouchableOpacity>
+                    <Text style= {styles.menuText} >Bible Bookmarks</Text>
+        </View>
+
+        <View>
+            <TouchableOpacity style = {styles.buttonContainer}>
+                    <MaterialCommunityIcon name = {'account-group'} size = {40}
+                        color = {'#EFEFEF'} />
+            </TouchableOpacity>
+                    <Text style= {styles.menuText} >Discipleship</Text>
+        </View>
+
+        <View>
+            <TouchableOpacity style = {styles.buttonContainer}>
+                    <MaterialCommunityIcon name = {'calendar-month'} size = {40}
+                        color = {'#EFEFEF'} />
+            </TouchableOpacity>
+                    <Text style= {styles.menuText} >Set Service</Text>
+        </View>
+
+        <View>
+            <TouchableOpacity style = {styles.buttonContainer}>
+                    <MaterialCommunityIcon name = {'upload-network'} size = {40}
+                        color = {'#EFEFEF'} />
+            </TouchableOpacity>
+                    <Text style= {styles.menuText} >Share Screen</Text>
+        </View>
+     </View>
      </View>
   )
 }
@@ -51,27 +124,27 @@ function MenuButtons(){
 export default MenuButtons
 
 const styles = StyleSheet.create({
-    container:{
-        marginTop: 20,
-        paddingBottom: 10
+
+    container: {
+        paddingTop: 80,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
 
-    buttonContainer:{
-        // alignItems: 'center'
-    },
-
-    button: {
+    buttonContainer: {
+        backgroundColor: '#1F51FF',
         width: 50,
         height: 50,
-        backgroundColor: '#1F51FF',
-        borderRadius: 15,
+        alignItems: 'center',
         justifyContent: 'center',
-        alignItems: 'center'
+        borderRadius: 10,
     },
 
     menuText: {
         color: '#000000',
-        fontSize: 15,
-        fontWeight: '600'
-     }
+        fontSize: 13,
+        fontWeight: '600',
+        paddingTop: 5,
+        textAlign: 'center',
+    }
 })
