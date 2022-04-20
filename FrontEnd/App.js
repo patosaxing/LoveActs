@@ -5,6 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from './Screens/Home'
+import LoginScreen from './Screens/LoginScreen';
 // import Home from './Components/Home'
 
 
@@ -12,17 +13,14 @@ const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <Home />
+    //<Home />
+    <LoginScreen />
     // <NavigationContainer>
-    //     <Stack.Navigator initialRouteName = 'Landing'>
-    //       <Stack.Screen name = 'Landing' component = {Home}
-    //         options = {{ headerShown: false }} />
-    //     </Stack.Navigator>
+    //   <Stack.Navigator>
+    //       <Stack.Screen name = 'Home' component = {Home} />
+    //   </Stack.Navigator>
     // </NavigationContainer>
-    // <View style={styles.container}>
-    //   <Text>Reach Love Impact!</Text>
-    //   <StatusBar style="auto" />
-    // </View>
+    
   );
 }
 

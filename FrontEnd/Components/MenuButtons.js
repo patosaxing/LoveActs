@@ -14,7 +14,7 @@ function MenuButtons(){
                     <MaterialCommunityIcon name = {'video-vintage'} size = {40}
                         color = {'#EFEFEF'} />
                 </TouchableOpacity>
-                    <Text style= {styles.menuText} >New Service</Text>
+                    <Text style= {styles.menuText} >New{'\n'}Service</Text>
         </View>
 
         <View>
@@ -30,7 +30,7 @@ function MenuButtons(){
                     <MaterialCommunityIcon name = {'calendar-month'} size = {40}
                         color = {'#EFEFEF'} />
             </TouchableOpacity>
-                    <Text style= {styles.menuText} >Set Service</Text>
+                    <Text style= {styles.menuText} >Set{'\n'}Service</Text>
         </View>
 
         <View>
@@ -38,7 +38,7 @@ function MenuButtons(){
                     <MaterialCommunityIcon name = {'upload-network'} size = {40}
                         color = {'#EFEFEF'} />
             </TouchableOpacity>
-                    <Text style= {styles.menuText} >Share Screen</Text>
+                    <Text style= {styles.menuText} >Share{'\n'}Screen</Text>
         </View>
     </View>
 
@@ -48,7 +48,7 @@ function MenuButtons(){
                     <MaterialCommunityIcon name = {'book-open-page-variant'} size = {40}
                         color = {'#EFEFEF'} />
                 </TouchableOpacity>
-                    <Text style= {styles.menuText} >Bible Bookmarks</Text>
+                    <Text style= {styles.menuText} >Bible{'\n'}Bookmarks</Text>
         </View>
 
         <View>
@@ -72,7 +72,7 @@ function MenuButtons(){
                     <MaterialCommunityIcon name = {'upload-network'} size = {40}
                         color = {'#EFEFEF'} />
             </TouchableOpacity>
-                    <Text style= {styles.menuText} >Share Screen</Text>
+                    <Text style= {styles.menuText} >Share{'\n'}Screen</Text>
         </View>
      </View>
      </View>
