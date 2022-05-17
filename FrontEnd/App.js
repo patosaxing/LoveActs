@@ -1,20 +1,29 @@
+//Import Statements
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Image,
+          Text, View, SafeAreaView } from 'react-native';
+import { Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
+import Onboarding1 from './src/Screens/Onboarding1';
+import LoginScreen from './src/Screens/LoginScreen/LoginScreen';
+import RegisterScreen from './src/Screens/RegisterScreen/RegisterScreen';
+
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <PaperProvider style = {styles.colors}>
+      {/* <Onboarding1/> */}
+      {/* <LoginScreen/> */}
+      <RegisterScreen/>
+    </PaperProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      primary: 'rgb(101,37,131)',
+      background: 'transparent',
+    }
 });
