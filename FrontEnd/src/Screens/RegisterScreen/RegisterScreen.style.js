@@ -3,7 +3,7 @@ import { ThemeProvider } from "react-native-paper";
 
 const registerScreenStyle = StyleSheet.create({
     content: {
-        padding: 15,
+        padding: 10,
         paddingTop: 0,
         marginTop: 5,
         color: 'rgb(101,37,131)'
