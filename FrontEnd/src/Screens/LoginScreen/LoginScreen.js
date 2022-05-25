@@ -1,26 +1,21 @@
 import React from 'react';
-import { SafeAreaView, Text, StyleSheet, View } from 'react-native';
-import { Button, Card, TextInput } from 'react-native-paper';
-import { LoginScreenStyle } from './LoginScreen.style'
-
+import { useState } from 'react';
+import { Text, View, TextInput } from 'react-native';
+import LoginScreenStyle from './LoginScreenStyle';
+import CustomInput from '../../Components/CustomInput';
 
 const LoginScreen = () => {
-  return (
-    <SafeAreaView style = {LoginScreenStyle.Content}>
-      <View style = {LoginScreenStyle.viewStyle}>
-        <Card>
-          <Card.Title title = "Kingdom Life Victory Church" titleStyle = {LoginScreenStyle.cardTitle}></Card.Title>
-          <Card.Content>
-              <TextInput label = 'Email/Username' keyboardType = 'email-address'></TextInput>
-              <TextInput label = 'Password' secureTextEntry = {true}></TextInput>
-              <Button uppercase = {false} style = {LoginScreenStyle.cardButton}>Forgot Email/Password</Button>
-              <Button mode = 'contained' style = {LoginScreenStyle.cardButton}>Login</Button>
-              <Button>Register</Button>
-          </Card.Content>  
-        </Card>
-      </View>
-    </SafeAreaView>
-  )
+    const [value, onChangeText] = useState('');
+
+    return(
+        <View style = {LoginScreenStyle.container}>
+            <CustomInput 
+                label = 'Username/Email' 
+                onChangeText = {(text) => onChangeText(text)}
+                value = {value}
+            />
+        </View>
+    )
 }
 
 export default LoginScreen;

@@ -13,8 +13,8 @@ export default function App() {
   return (
     <PaperProvider style = {styles.colors}>
       {/* <Onboarding1/> */}
-      {/* <LoginScreen/> */}
-      <RegisterScreen/>
+      <LoginScreen/>
+      {/* <RegisterScreen/> */}
     </PaperProvider>
   );
 }
