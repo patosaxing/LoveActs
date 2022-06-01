@@ -1,1 +1,2 @@
-export { default } from './CustomInput';
+/* eslint-disable prettier/prettier */
+export {default} from './CustomInput';
