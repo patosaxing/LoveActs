@@ -7,6 +7,8 @@ import { View, Image, StyleSheet,
 import loginImage from '../../../assets/images/loginImage1.png'
 import CustomInput from '../../Components/CustomInput'
 import CustomButton from '../../Components/CustomButton/CustomButton'
+import SocialButtons from '../../Components/SocialButtons/SocialButtons'
+import { useNavigation } from '@react-navigation/native'
 
 
 const LoginScreen = () => {
@@ -15,24 +17,23 @@ const LoginScreen = () => {
 
     const {height} = useWindowDimensions()
 
+    //Defining Function to navigate pages
+    const navigation = useNavigation();
+
     const onLoginPressed = () => {
         console.warn('Log In')
+
+        navigation.navigate('Confirm Email')
     }
 
     const onForgotPasswordPressed = () => {
         console.warn('Register or Reset Password')
     }
 
-    const onLoginFacebook = () => {
-        console.warn('Facebook Login')
-    }
-
-    const onLoginGoogle = () => {
-        console.warn('Google Login')
-    }
-
     const onResgister = () => {
         console.warn('Create an Account')
+
+        navigation.navigate('Register')
     }
 
     return (
@@ -67,18 +68,9 @@ const LoginScreen = () => {
                     onPress = {onForgotPasswordPressed}
                     type = "TERTIARY"
                 />
-                <CustomButton
-                    text = "Sign In with Facebook"
-                    onPress = {onLoginFacebook}
-                    bgColor = "#E7EAF4"
-                    fgColor = "#4765A9"
-                />
-                <CustomButton
-                    text = "Sign In with Google"
-                    onPress = {onLoginGoogle}
-                    bgColor = "#FAE9EA"
-                    fgColor = "#DD4D44"
-                />
+
+                <SocialButtons />
+
                 <CustomButton
                     text = "Dont have an account? Create One"
                     onPress = {onResgister}

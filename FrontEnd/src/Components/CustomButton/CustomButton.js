@@ -48,6 +48,17 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
 
+    container_SECONDARY: {
+        backgroundColor: '#FFFFFF',
+        borderColor: '#000000',
+        borderWidth: 1,
+        borderRadius: 5,
+    },
+
+    text_SECONDARY: {
+        color: '#5D3FD3',
+    },
+
     text:{
         fontWeight: 'bold',
         color: 'black',

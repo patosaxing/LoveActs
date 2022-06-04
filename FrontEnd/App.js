@@ -8,12 +8,12 @@
 
 import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
-import LoginScreen from './src/Screens/LoginScreen';
+import Navigation from './src/Navigation/Navigation';
 
 const App = () => {
   return (
     <SafeAreaView style={styles.root}>
-      <LoginScreen />
+      <Navigation />
     </SafeAreaView>
   );
 };
